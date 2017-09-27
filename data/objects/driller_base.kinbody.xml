@@ -1,0 +1,10 @@
+<Kinbody name="robot_base">
+  <body type="dynamic">
+    <geom type="box">
+      <extents>0.150 0.150 0.21</extents>
+      <translation>-0.0325 0 -0.210001</translation>
+      <diffusecolor>0.6 0.6 0.6</diffusecolor>
+      <ambientcolor>0.8 0.8 0.8</ambientcolor>
+    </geom>
+  </body>
+</Kinbody>

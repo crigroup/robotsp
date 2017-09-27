@@ -1,0 +1,22 @@
+*.pyc
+__pycache__
+*~
+.DS_Store
+build/*
+doc/build
+.coverage
+*.class
+
+# Generated while building documentation.
+doc/auto_examples
+doc/modules
+doc/reference/generated
+doc/reference/algorithms/generated
+doc/reference/classes/generated
+doc/reference/readwrite/generated
+
+# Generated when 'python setup_egg.py'
+robotsp.egg-info/
+
+# Backup files
+*.bak

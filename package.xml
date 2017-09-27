@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>robotsp</name>
+  <version>0.1.0</version>
+  <description>The RoboTSP package</description>
+
+  <maintainer email="fsuarez6@gmail.com">Francisco Suarez-Ruiz</maintainer>
+  <license>BSD 3-Clause</license>
+  <url type="repository">https://github.com/crigroup/robotsp</url>
+  <url type="bugtracker">https://github.com/crigroup/robotsp/issues</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>criutils</depend>
+  <depend>glkh_solver</depend>
+  <depend>lkh_solver</depend>
+  <depend>raveutils</depend>
+
+  <exec_depend>python-h5py</exec_depend>
+  <exec_depend>python-matplotlib</exec_depend>
+  <exec_depend>python-networkx</exec_depend>
+  <exec_depend>python-numpy</exec_depend>
+  <exec_depend>python-pygraphviz</exec_depend>
+  <exec_depend>python-scipy</exec_depend>
+
+  <test_depend>python-mock</test_depend>
+
+  <export>
+    <rosdoc config="rosdoc.yaml"/>
+  </export>
+
+</package>

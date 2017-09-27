@@ -1,3 +1,22 @@
-# robotsp
+# RoboTSP: Robotic Task Sequencing Problem
 
-Coming soon...
+RoboTSP is a ROS package for solving the Robotic Task Sequencing Problem
+developed by [CRI Group](http://www.ntu.edu.sg/home/cuong/),
+[Nanyang Technological University, Singapore](http://www.ntu.edu.sg).
+
+- **Source:** https://github.com/crigroup/robotsp
+- **Bug reports:** https://github.com/crigroup/robotsp/issues
+
+### Maintainer
+* [Francisco Suárez Ruiz](http://fsuarez6.github.io)
+
+### Documentation
+* Throughout the various files in this repository.
+* Documentation: https://crigroup.github.io/robotsp/
+
+## Travis - Continuous Integration
+
+[![Build Status](https://travis-ci.org/crigroup/robotsp.svg?branch=master)](https://travis-ci.org/crigroup/robotsp)
+
+## Demo
+[![RoboTSP video](https://img.youtube.com/vi/w33QfRjKFs8/0.jpg)](https://www.youtube.com/watch?v=w33QfRjKFs8)

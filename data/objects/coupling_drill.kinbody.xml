@@ -1,0 +1,12 @@
+<kinbody name="coupling_drill">
+
+  <body name="coupling_drill">
+    <geom type="box">
+      <extents>0.0315 0.095 0.0075</extents>
+      <diffusecolor>0.6 0.6 0.6</diffusecolor>
+      <ambientcolor>0.6 0.6 0.6</ambientcolor>
+      <translation>0 -0.0535 0.0075</translation>
+    </geom>
+  </body>
+
+</kinbody>

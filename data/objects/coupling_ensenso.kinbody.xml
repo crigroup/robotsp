@@ -1,0 +1,12 @@
+<kinbody name="coupling_ensenso">
+
+  <body name="coupling_ensenso">
+    <geom type="box">
+      <extents>0.065 0.028 0.005</extents>
+      <diffusecolor>0.6 0.6 0.6</diffusecolor>
+      <ambientcolor>0.6 0.6 0.6</ambientcolor>
+      <translation>-0.0365 0 0.005</translation>
+    </geom>
+  </body>
+
+</kinbody>

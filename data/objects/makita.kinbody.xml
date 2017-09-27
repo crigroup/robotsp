@@ -1,0 +1,242 @@
+<kinbody name="makita">
+
+  <!-- Reference frame of the drill is at neck1 -->
+  <body name="neck1" type="dynamic">
+    <geom type="cylinder">
+      <radius>0.02165</radius>
+      <height>0.0160</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <translation>0 0 0.008</translation>
+      <diffusecolor>0.1 0.1 0.1</diffusecolor>
+      <ambientcolor>0.6 0.6 0.6</ambientcolor>
+    </geom>
+  </body>
+  
+  <!-- ABOVE neck1 -->
+  
+  <body name="sleeve" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <radius>0.0210</radius>
+      <height>0.04265</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0 0 0</diffusecolor>
+    </geom>
+    <translation>0 0 0.037325</translation>
+  </body>
+
+  <body name="body" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <radius>0.0160</radius>
+      <height>0.0224</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.8 0.8 0.8</diffusecolor>
+      <ambientcolor>0.6 0.6 0.6</ambientcolor>
+    </geom>
+    <translation>0 0 0.06985</translation>
+  </body>
+
+  <!-- Length from the top body to the tip = 0.0705 m. (20 APRIL 2016) -->
+  <body name="drillbit" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <!-- Real radius = 0.0032 m. -->
+      <radius>0.005</radius>
+      <height>0.139</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.9 0.9 0.9</diffusecolor>
+      <ambientcolor>0.5 0.5 0.5</ambientcolor>
+    </geom>
+    <translation>0 0 0.08105</translation>
+  </body>
+
+  <!-- BELOW neck1 -->
+
+  <body name="neck2" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <radius>0.02465</radius>
+      <height>0.0047</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.1 0.1 0.1</diffusecolor>
+      <ambientcolor>0.6 0.6 0.6</ambientcolor>
+    </geom>
+    <translation>0 0 -0.00235</translation>
+  </body>
+
+  <body name="drillhouse1" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <!-- Real radius = 0.02965 -->
+      <!-- <radius>0.02965</radius> -->
+      <radius>0.03315</radius>
+      <height>0.200</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.157 0.451 0.541</diffusecolor>
+    </geom>
+    <translation>0 0 -0.1047</translation>
+  </body>
+
+  <body name="drillhouse2" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <!-- Real radius = 0.0374 -->
+      <!-- <radius>0.0374</radius> -->
+      <radius>0.0409</radius>
+      <height>0.200</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.157 0.451 0.541</diffusecolor>
+    </geom>
+    <translation>0.02245 0 -0.1047</translation>
+  </body>
+
+  <body name="screw1" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <!-- Real radius = 0.005 -->
+      <!-- <radius>0.005</radius> -->
+      <radius>0.006</radius>
+      <height>0.042</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.157 0.451 0.541</diffusecolor>
+    </geom>
+    <translation>0.06085 0 -0.0395</translation>
+  </body>
+
+  <body name="screw2" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <!-- Real radius = 0.005 -->
+      <!-- <radius>0.005</radius> -->
+      <radius>0.006</radius>
+      <height>0.042</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.157 0.451 0.541</diffusecolor>
+    </geom>
+    <translation>-0.00215 0.0324 -0.0395</translation>
+  </body>
+
+  <body name="screw3" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <!-- Real radius = 0.005 -->
+      <!-- <radius>0.005</radius> -->
+      <radius>0.006</radius>
+      <height>0.042</height>
+      <rotationaxis>1 0 0 90</rotationaxis>
+      <diffusecolor>0.157 0.451 0.541</diffusecolor>
+    </geom>
+    <translation>-0.00215 -0.0324 -0.0395</translation>
+  </body>
+
+  <body name="drillhandle" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="box">
+      <extents>0.100 0.02 0.0325</extents>
+      <diffusecolor>0.157 0.451 0.541</diffusecolor>
+    </geom>
+    <translation>0.07185 0 -0.1722</translation>
+  </body>
+
+  <body name="wire" type="dynamic">
+    <offsetfrom>neck1</offsetfrom>
+    <geom type="cylinder">
+      <radius>0.00825</radius>
+      <height>0.10</height>
+      <rotationaxis>0 0 1 90</rotationaxis>
+      <translation></translation>
+      <diffusecolor>0 0 0</diffusecolor>
+    </geom>
+    <translation>0.22185 0 -0.18195</translation>
+  </body>
+
+  <!-- BODY RELATIVITY INFORMATION -->
+  <adjacent>neck1 sleeve</adjacent>
+  <adjacent>sleeve body</adjacent>
+  <adjacent>body drillbit</adjacent>
+  <adjacent>neck1 neck2</adjacent>
+  <adjacent>neck2 drillhouse1</adjacent>
+  <adjacent>neck2 drillhouse2</adjacent>
+  <adjacent>drillhouse1 screw2</adjacent>
+  <adjacent>drillhouse1 screw3</adjacent>
+  <adjacent>drillhouse2 screw1</adjacent>
+  <adjacent>drillhouse1 screw2</adjacent>
+  <adjacent>drillhouse1 screw3</adjacent>
+  <adjacent>drillhouse1 drillhandle</adjacent>
+  <adjacent>drillhouse2 drillhandle</adjacent>
+  <adjacent>drillhandle wire</adjacent>
+
+  <joint name="jdummy_neck1_sleeve" type="hinge" enable="false">
+    <body>neck1</body>
+    <body>sleeve</body>
+    <limits>0 0</limits>
+  </joint>
+  
+  <joint name="jdummy_sleeve_body" type="hinge" enable="false">
+    <body>sleeve</body>
+    <body>body</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_body_drillbit" type="hinge" enable="false">
+    <body>body</body>
+    <body>drillbit</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_neck1_neck2" type="hinge" enable="false">
+    <body>neck1</body>
+    <body>neck2</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_neck2_drillhouse1" type="hinge" enable="false">
+    <body>neck2</body>
+    <body>drillhouse1</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_neck2_drillhouse2" type="hinge" enable="false">
+    <body>neck2</body>
+    <body>drillhouse2</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_drillhouse1_screw2" type="hinge" enable="false">
+    <body>drillhouse1</body>
+    <body>screw2</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_drillhouse1_screw3" type="hinge" enable="false">
+    <body>drillhouse1</body>
+    <body>screw3</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_drillhouse2_screw1" type="hinge" enable="false">
+    <body>drillhouse2</body>
+    <body>screw1</body>
+    <limits>0 0</limits>
+  </joint>
+
+  <joint name="jdummy_drillhouse1_drillhandle" type="hinge" enable="false">
+    <body>drillhouse1</body>
+    <body>drillhandle</body>
+    <limits>0 0</limits>
+  </joint>
+  
+  <joint name="jdummy_drillhouse2_drillhandle" type="hinge" enable="false">
+    <body>drillhouse2</body>
+    <body>drillhandle</body>
+    <limits>0 0</limits>
+  </joint>
+  
+  <joint name="jdummy_drillhandle_wire" type="hinge" enable="false">
+    <body>drillhandle</body>
+    <body>wire</body>
+    <limits>0 0</limits>
+  </joint>
+
+</kinbody>

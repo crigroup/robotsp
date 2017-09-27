@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Robot name="denso_driller">
+
+  <!-- Robot -->
+  <Robot file="denso_vs060.dae"></Robot>
+
+  <!-- Coupling-Ensenso -->
+  <Kinbody file="../objects/coupling_ensenso.kinbody.xml">
+    <body name="coupling_ensenso">
+      <offsetfrom>link6</offsetfrom>
+    </body>
+    <joint name="jdummy_link6_coupling" type="hinge" enable="false">
+      <body>link6</body>
+      <body>coupling_ensenso</body>
+      <limits>0 0</limits>
+    </joint>
+  </Kinbody>
+
+  <!-- Ensenso -->
+  <Kinbody file="../objects/ensenso.kinbody.xml">
+    <body name="camera">
+      <offsetfrom>coupling_ensenso</offsetfrom>
+      <translation>-0.0735 0 0.062</translation>
+      <rotationaxis>0 0 1 -90</rotationaxis>
+      <geom type="box">
+        <extents>0.105 0.03 0.0312</extents>
+        <diffusecolor>0 0 1</diffusecolor>
+        <transparency>0.5</transparency>
+        <translation>0 0 -0.0208</translation>
+      </geom>
+    </body>
+    <joint name="jdummy_coupling_ensenso" type="hinge" enable="false">
+      <body>coupling_ensenso</body>
+      <body>camera</body>
+      <limits>0 0</limits>
+    </joint>
+  </Kinbody>
+
+  <!-- Coupling-drill -->
+  <Kinbody file="../objects/coupling_drill.kinbody.xml">
+    <body name="coupling_drill">
+      <offsetfrom>coupling_ensenso</offsetfrom>
+      <translation>0 0.120 0.01</translation>
+    </body>
+    <joint name="jdummy_coupling_coupling" type="hinge" enable="false">
+      <body>coupling_ensenso</body>
+      <body>coupling_drill</body>
+      <limits>0 0</limits>
+    </joint>
+  </Kinbody>
+
+  <!-- Drill -->
+  <Kinbody file="../objects/makita.kinbody.xml">
+    <body name="neck1">
+      <offsetfrom>coupling_drill</offsetfrom>
+    </body>
+    <joint name="jdummy_coupling_drill" type="hinge" enable="false">
+      <body>coupling_drill</body>
+      <body>neck1</body>
+      <limits>0 0</limits>
+    </joint>
+  </Kinbody>
+
+  <adjacent>coupling_ensenso camera</adjacent>
+  <adjacent>coupling_ensenso coupling_drill</adjacent>
+  <adjacent>coupling_drill sleeve</adjacent>
+  <adjacent>coupling_drill neck1</adjacent>
+  <adjacent>coupling_drill neck2</adjacent>
+
+  <!-- Manipulators -->
+  <Manipulator name="camera">
+    <base>link0</base>
+    <effector>camera</effector>
+    <direction>0 0 1</direction>
+  </Manipulator>
+
+  <Manipulator name="drill">
+    <base>link0</base>
+    <effector>drillbit</effector>
+    <translation>0 0 0.0705</translation>
+    <direction>0 0 1</direction>
+  </Manipulator>
+</Robot>

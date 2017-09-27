@@ -1,0 +1,11 @@
+<Kinbody name="jig">
+    <body name="jig_base" type="dynamic">
+    <geom type="trimesh" modifiable="false">
+      <data>meshes/jig.stl 0.001</data>
+      <render>meshes/jig.stl 0.001</render>
+      <diffusecolor>0.6 0.6 0.6</diffusecolor>
+      <ambientcolor>0.6 0.6 0.6</ambientcolor>
+      <translation>-0.31000 -0.41800 0.51234</translation>
+    </geom>
+  </body>
+</Kinbody>

@@ -1,0 +1,4 @@
+# Maintained dependencies
+- git: {local-name: criutils, uri: 'https://github.com/crigroup/criutils.git', version: master}
+- git: {local-name: lkh, uri: 'https://github.com/crigroup/lkh.git', version: master}
+- git: {local-name: raveutils, uri: 'https://github.com/crigroup/raveutils.git', version: master}
