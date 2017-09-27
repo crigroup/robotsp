@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; robotsp 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="robotsp 0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="API Documentation" href="api-documentation.html"/>
+        <link rel="prev" title="RoboTSP Package" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> robotsp
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ros-kinetic">ROS Kinetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openrave">OpenRAVE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ros-package-installation">ROS Package installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-installation">Testing the Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api-documentation.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">robotsp</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Installation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/installation.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>The following instructions have been tested in <strong>Ubuntu 16.04</strong> (Xenial), 64
+bits.</p>
+<div class="section" id="ros-kinetic">
+<h2>ROS Kinetic<a class="headerlink" href="#ros-kinetic" title="Permalink to this headline">¶</a></h2>
+<p>Set-up your computer to accept software from <em>packages.ros.org</em> and set-up your
+keys following the steps described at
+<a class="reference external" href="http://wiki.ros.org/kinetic/Installation/Ubuntu">http://wiki.ros.org/kinetic/Installation/Ubuntu</a></p>
+<p>Now, install the ROS bare bones:</p>
+<div class="highlight-python"><div class="highlight"><pre># Installation
+sudo apt-get update
+sudo apt-get install python-rosdep python-wstool ros-kinetic-ros-base
+# Initialize rosdep
+sudo rosdep init
+rosdep update
+</pre></div>
+</div>
+</div>
+<div class="section" id="openrave">
+<h2>OpenRAVE<a class="headerlink" href="#openrave" title="Permalink to this headline">¶</a></h2>
+<p>OpenRAVE is one of the most powerful existing simulation and motion planning
+environments. It is widely used in academia and industry.</p>
+<p>Here you can find the <em>automated</em> installation scripts:
+<a class="reference external" href="https://github.com/crigroup/openrave-installation">https://github.com/crigroup/openrave-installation</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the <em>automated</em> method fails, you can try the manual method:
+<a class="reference external" href="https://crigroup.gitbooks.io/osrobotics/content/installation/motion_planning.html">https://crigroup.gitbooks.io/osrobotics/content/installation/motion_planning.html</a></p>
+</div>
+</div>
+<div class="section" id="ros-package-installation">
+<h2>ROS Package installation<a class="headerlink" href="#ros-package-installation" title="Permalink to this headline">¶</a></h2>
+<p>Go to your ROS working directory:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd ~/catkin_ws/src
+</pre></div>
+</div>
+<p>Use <code class="docutils literal"><span class="pre">wstool</span></code> to download the required repositories:</p>
+<div class="highlight-python"><div class="highlight"><pre>wstool init .
+wstool merge https://raw.github.com/crigroup/robotsp/master/robotsp.rosinstall
+wstool update
+</pre></div>
+</div>
+<p>Install any missing dependencies using rosdep:</p>
+<div class="highlight-python"><div class="highlight"><pre>rosdep update
+rosdep install --from-paths . --ignore-src -y
+</pre></div>
+</div>
+<p>Now, compile your ROS workspace:</p>
+<div class="highlight-python"><div class="highlight"><pre>cd ~/catkin_ws &amp;&amp; catkin_make
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-the-installation">
+<h2>Testing the Installation<a class="headerlink" href="#testing-the-installation" title="Permalink to this headline">¶</a></h2>
+<p>Make sure you always source the appropriate ROS setup file, e.g:</p>
+<div class="highlight-python"><div class="highlight"><pre>source ~/catkin_ws/devel/setup.bash
+</pre></div>
+</div>
+<p>The following will run the tests of the <code class="docutils literal"><span class="pre">robotsp</span></code> package:</p>
+<div class="highlight-python"><div class="highlight"><pre>roscd robotsp/tests
+nosetests -v
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api-documentation.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="RoboTSP Package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, CRI Group.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

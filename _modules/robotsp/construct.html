@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>robotsp.construct &mdash; robotsp 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="robotsp 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> robotsp
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../zbibliography.html">Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">robotsp</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>robotsp.construct</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for robotsp.construct</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">progressbar</span> <span class="kn">as</span> <span class="nn">pbar</span>
+<span class="c1"># Own modules</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metric</span>
+
+
+<div class="viewcode-block" id="from_coordinate_list"><a class="viewcode-back" href="../../reference.html#robotsp.construct.from_coordinate_list">[docs]</a><span class="k">def</span> <span class="nf">from_coordinate_list</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">distfn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Construct a ``nx.Graph`` using the input coordinates</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  coordinates: list</span>
+<span class="sd">    The input coordinates</span>
+<span class="sd">  distfn: Callable, optional</span>
+<span class="sd">    The function to be used to compute the distance/weight between nodes. If</span>
+<span class="sd">    `None`, :meth:`robotsp.metric.euclidean_fn` will be used.</span>
+<span class="sd">  args: tuple, optional</span>
+<span class="sd">    Additional arguments to be passed to the ``distfn``</span>
+<span class="sd">  weight: str, optional</span>
+<span class="sd">    Use this edge attribute as the edge weight</span>
+
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  rotated: list</span>
+<span class="sd">    The rotated tour</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">if</span> <span class="n">distfn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">distfn</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
+  <span class="n">num_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+  <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">):</span>
+      <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+      <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+      <span class="n">dist</span> <span class="o">=</span> <span class="n">distfn</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">dist</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">graph</span></div>
+
+<div class="viewcode-block" id="from_setslist"><a class="viewcode-back" href="../../reference.html#robotsp.construct.from_setslist">[docs]</a><span class="k">def</span> <span class="nf">from_setslist</span><span class="p">(</span><span class="n">setslist</span><span class="p">,</span> <span class="n">distfn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">distfn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">distfn</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
+  <span class="n">set_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">setslist</span><span class="p">]</span>
+  <span class="n">num_sets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">setslist</span><span class="p">)</span>
+  <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+  <span class="c1"># Generate the list of nodes ids</span>
+  <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">sets</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">set_sizes</span><span class="p">:</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="n">start</span><span class="o">+</span><span class="n">size</span>
+    <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">))</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">stop</span>
+  <span class="c1"># Add nodes and edges</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_sets</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">set_i_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_sets</span><span class="p">):</span>
+      <span class="n">set_j_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+      <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">l</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">set_i_indices</span><span class="p">,</span> <span class="n">set_j_indices</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">setslist</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">setslist</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">l</span><span class="p">]</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">sets</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">sets</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">l</span><span class="p">]</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">distfn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">))</span>
+  <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">sets</span></div>
+
+<div class="viewcode-block" id="from_sorted_setslist"><a class="viewcode-back" href="../../reference.html#robotsp.construct.from_sorted_setslist">[docs]</a><span class="k">def</span> <span class="nf">from_sorted_setslist</span><span class="p">(</span><span class="n">setslist</span><span class="p">,</span> <span class="n">distfn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span>
+                                                                <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">distfn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">distfn</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
+  <span class="n">set_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">setslist</span><span class="p">]</span>
+  <span class="n">num_sets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">setslist</span><span class="p">)</span>
+  <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+  <span class="c1"># Generate the list of nodes ids</span>
+  <span class="n">num_edges</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">sets</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">size</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">):</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="n">start</span><span class="o">+</span><span class="n">size</span>
+    <span class="n">sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">))</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">stop</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+      <span class="n">num_edges</span> <span class="o">+=</span> <span class="n">set_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">set_sizes</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+  <span class="c1"># Configure the status bar</span>
+  <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+    <span class="n">widgets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Populating graph edges: &#39;</span><span class="p">,</span> <span class="n">pbar</span><span class="o">.</span><span class="n">SimpleProgress</span><span class="p">()]</span>
+    <span class="n">widgets</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">pbar</span><span class="o">.</span><span class="n">Bar</span><span class="p">(),</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">pbar</span><span class="o">.</span><span class="n">Timer</span><span class="p">()]</span>
+    <span class="n">bar</span> <span class="o">=</span> <span class="n">pbar</span><span class="o">.</span><span class="n">ProgressBar</span><span class="p">(</span><span class="n">widgets</span><span class="o">=</span><span class="n">widgets</span><span class="p">,</span> <span class="n">maxval</span><span class="o">=</span><span class="n">num_edges</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="c1"># Add nodes and edges</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_sets</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">set_i_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">set_j_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">set_sizes</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">l</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">set_i_indices</span><span class="p">,</span> <span class="n">set_j_indices</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="n">x</span> <span class="o">=</span> <span class="n">setslist</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="n">setslist</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">l</span><span class="p">]</span>
+      <span class="n">u</span> <span class="o">=</span> <span class="n">sets</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="n">sets</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">l</span><span class="p">]</span>
+      <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+      <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+      <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">distfn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">))</span>
+  <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+    <span class="n">bar</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">sets</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, CRI Group.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

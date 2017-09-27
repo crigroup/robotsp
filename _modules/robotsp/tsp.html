@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>robotsp.tsp &mdash; robotsp 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="robotsp 0.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> robotsp
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../zbibliography.html">Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">robotsp</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>robotsp.tsp</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for robotsp.tsp</h1><div class="highlight"><pre>
+<span class="ch">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
+<span class="c1"># Own modules</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metric</span>
+
+
+<div class="viewcode-block" id="compute_tour_cost"><a class="viewcode-back" href="../../reference.html#robotsp.tsp.compute_tour_cost">[docs]</a><span class="k">def</span> <span class="nf">compute_tour_cost</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">tour</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="n">is_cycle</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+  <span class="n">cost</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">is_cycle</span> <span class="k">else</span> <span class="mi">1</span>
+  <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tour</span><span class="p">)):</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">tour</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">tour</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">cost</span> <span class="o">+=</span> <span class="n">graph</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">weight</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">cost</span></div>
+
+<div class="viewcode-block" id="nearest_neighbor"><a class="viewcode-back" href="../../reference.html#robotsp.tsp.nearest_neighbor">[docs]</a><span class="k">def</span> <span class="nf">nearest_neighbor</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">restarts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Recursive Nearest-Neighbor algorithm to solve the traveling salesman problem.</span>
+
+<span class="sd">  These are the steps of the algorithm for each restart:</span>
+
+<span class="sd">  #. Start on a random node as current node;</span>
+<span class="sd">  #. Find the shortest edge connecting the current node with an unvisited node;</span>
+<span class="sd">  #. Mark the found node as current and visited;</span>
+<span class="sd">  #. Go to step 2 until all nodes are visited</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  graph: NetworkX graph</span>
+<span class="sd">  restarts: int, optional (default=10)</span>
+<span class="sd">    Number of times the algorithm will try a different, randomly selected, node</span>
+<span class="sd">    as starting point</span>
+<span class="sd">  weight: string, optional (default=&#39;weight&#39;)</span>
+<span class="sd">    Edge data key corresponding to the edge weight</span>
+
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  best_tour: list</span>
+<span class="sd">    The sequence for visiting all the nodes</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">restarts</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">restarts</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
+  <span class="n">nodelist</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span>
+  <span class="n">tried_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">min_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">restarts</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+      <span class="n">current_node</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">nodelist</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">current_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tried_nodes</span><span class="p">:</span>
+        <span class="n">tried_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_node</span><span class="p">)</span>
+        <span class="k">break</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">tour</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_node</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">g</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="n">min_weight</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">neighbors_iter</span><span class="p">(</span><span class="n">current_node</span><span class="p">):</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">current_node</span><span class="p">][</span><span class="n">neighbor</span><span class="p">][</span><span class="n">weight</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&lt;</span> <span class="n">min_weight</span><span class="p">:</span>
+          <span class="n">nn</span> <span class="o">=</span> <span class="n">neighbor</span>
+          <span class="n">min_weight</span> <span class="o">=</span> <span class="n">w</span>
+      <span class="n">g</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">current_node</span><span class="p">)</span>
+      <span class="n">tour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="p">)</span>
+      <span class="n">current_node</span> <span class="o">=</span> <span class="n">nn</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">compute_tour_cost</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">tour</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cost</span> <span class="o">&lt;</span> <span class="n">min_cost</span><span class="p">:</span>
+      <span class="n">min_cost</span> <span class="o">=</span> <span class="n">cost</span>
+      <span class="n">best_tour</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tour</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">best_tour</span></div>
+
+<div class="viewcode-block" id="rotate_tour"><a class="viewcode-back" href="../../reference.html#robotsp.tsp.rotate_tour">[docs]</a><span class="k">def</span> <span class="nf">rotate_tour</span><span class="p">(</span><span class="n">tour</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  Rotate a tour so that it starts at the given ``start`` index. This is</span>
+<span class="sd">  equivalent to rotate the input list to the left.</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  tour: list</span>
+<span class="sd">    The input tour</span>
+<span class="sd">  start: int, optional (default=0)</span>
+<span class="sd">    New start index for the tour</span>
+
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  rotated: list</span>
+<span class="sd">    The rotated tour</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">idx</span> <span class="o">=</span> <span class="n">tour</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">rotated</span> <span class="o">=</span> <span class="n">tour</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span> <span class="o">+</span> <span class="n">tour</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">rotated</span> <span class="o">=</span> <span class="n">tour</span>
+  <span class="k">return</span> <span class="n">rotated</span></div>
+
+<div class="viewcode-block" id="scip_solver"><a class="viewcode-back" href="../../reference.html#robotsp.tsp.scip_solver">[docs]</a><span class="k">def</span> <span class="nf">scip_solver</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pyscipopt</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">quicksum</span>
+  <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s1">&#39;SCIP Optimization Suit with Python support not found&#39;</span><span class="p">)</span>
+  <span class="n">nodes</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span>
+  <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+  <span class="n">c</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+  <span class="c1"># Define the optimization problem</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="s1">&#39;tsp&#39;</span><span class="p">)</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">hideOutput</span><span class="p">()</span> <span class="c1"># silent/verbose mode</span>
+  <span class="c1"># Create the variables</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="p">{}</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">):</span>
+      <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">addVar</span><span class="p">(</span><span class="n">ub</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;x(</span><span class="si">%s</span><span class="s1">,</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">))</span>
+  <span class="c1"># Add the constraints</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">addCons</span><span class="p">(</span><span class="n">quicksum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span> <span class="o">+</span>
+        <span class="n">quicksum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">)])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Degree(</span><span class="si">%s</span><span class="s1">)&#39;</span><span class="o">%</span><span class="n">i</span><span class="p">)</span>
+  <span class="c1"># Set minimization objective</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span><span class="n">quicksum</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">)),</span> <span class="s1">&#39;minimize&#39;</span><span class="p">)</span>
+  <span class="c1"># Limit the number of edges in a connected component S to |S|-1</span>
+  <span class="k">def</span> <span class="nf">addcut</span><span class="p">(</span><span class="n">cut_edges</span><span class="p">):</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">cut_edges</span><span class="p">)</span>
+    <span class="n">Components</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">False</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">freeTransform</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">Components</span><span class="p">:</span>
+      <span class="n">model</span><span class="o">.</span><span class="n">addCons</span><span class="p">(</span><span class="n">quicksum</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">S</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">S</span> <span class="k">if</span> <span class="n">j</span><span class="o">&gt;</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">True</span>
+  <span class="c1"># Solve</span>
+  <span class="n">EPS</span> <span class="o">=</span> <span class="mf">1.e-6</span>
+  <span class="n">isMIP</span> <span class="o">=</span> <span class="bp">False</span>
+  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">getVal</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">EPS</span><span class="p">:</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="n">addcut</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">isMIP</span><span class="p">:</span>     <span class="c1"># integer variables, components connected: solution found</span>
+        <span class="k">break</span>
+      <span class="n">model</span><span class="o">.</span><span class="n">freeTransform</span><span class="p">()</span>
+      <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>     <span class="c1"># all components connected, switch to integer model</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">chgVarType</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span>
+        <span class="n">isMIP</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="c1"># Extract the tour from the edges</span>
+  <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+  <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">nodes</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+  <span class="n">tour_edges</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">eulerian_circuit</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes_iter</span><span class="p">()</span><span class="o">.</span><span class="n">next</span><span class="p">())</span>
+  <span class="n">tour</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">tour_edges</span><span class="p">]</span>
+  <span class="k">return</span> <span class="n">tour</span></div>
+
+<div class="viewcode-block" id="two_opt"><a class="viewcode-back" href="../../reference.html#robotsp.tsp.two_opt">[docs]</a><span class="k">def</span> <span class="nf">two_opt</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
+  <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+  <span class="n">tour</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">()</span>
+  <span class="c1"># min_cost = compute_tour_cost(graph, tour)</span>
+  <span class="n">start_again</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="k">while</span> <span class="n">start_again</span><span class="p">:</span>
+    <span class="n">start_again</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_nodes</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">):</span>
+        <span class="c1"># 2-opt swap</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tour</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tour</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">tour</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">tour</span><span class="p">[(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="n">num_nodes</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">c</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="n">d</span><span class="p">):</span>
+          <span class="k">continue</span>
+        <span class="n">ab_cd_dist</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">][</span><span class="n">weight</span><span class="p">]</span> <span class="o">+</span> <span class="n">graph</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">d</span><span class="p">][</span><span class="n">weight</span><span class="p">]</span>
+        <span class="n">ac_bd_dist</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">c</span><span class="p">][</span><span class="n">weight</span><span class="p">]</span> <span class="o">+</span> <span class="n">graph</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">b</span><span class="p">][</span><span class="n">d</span><span class="p">][</span><span class="n">weight</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ab_cd_dist</span> <span class="o">&gt;</span> <span class="n">ac_bd_dist</span><span class="p">:</span>
+          <span class="n">tour</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">tour</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+          <span class="n">start_again</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">start_again</span><span class="p">:</span>
+          <span class="k">break</span>
+      <span class="k">if</span> <span class="n">start_again</span><span class="p">:</span>
+        <span class="k">break</span>
+  <span class="k">return</span> <span class="n">tour</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, CRI Group.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

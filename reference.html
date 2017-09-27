@@ -1,0 +1,542 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Reference &mdash; robotsp 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="robotsp 0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Citing" href="citing.html"/>
+        <link rel="prev" title="Install" href="install.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> robotsp
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-robotsp.construct">Construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-robotsp.metric">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-robotsp.parser">Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-robotsp.solver">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-robotsp.tsp">Traveling Salesman Problem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zbibliography.html">Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">robotsp</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Reference</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/reference.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-robotsp.construct">
+<span id="construction"></span><h2>Construction<a class="headerlink" href="#module-robotsp.construct" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="robotsp.construct.from_coordinate_list">
+<code class="descclassname">robotsp.construct.</code><code class="descname">from_coordinate_list</code><span class="sig-paren">(</span><em>coordinates</em>, <em>distfn=None</em>, <em>args=()</em>, <em>weight='weight'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/construct.html#from_coordinate_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.construct.from_coordinate_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a <code class="docutils literal"><span class="pre">nx.Graph</span></code> using the input coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>coordinates</strong> (<em>list</em>) &#8211; The input coordinates</li>
+<li><strong>distfn</strong> (<em>Callable, optional</em>) &#8211; The function to be used to compute the distance/weight between nodes. If
+<cite>None</cite>, <a class="reference internal" href="#robotsp.metric.euclidean_fn" title="robotsp.metric.euclidean_fn"><code class="xref py py-meth docutils literal"><span class="pre">robotsp.metric.euclidean_fn()</span></code></a> will be used.</li>
+<li><strong>args</strong> (<em>tuple, optional</em>) &#8211; Additional arguments to be passed to the <code class="docutils literal"><span class="pre">distfn</span></code></li>
+<li><strong>weight</strong> (<em>str, optional</em>) &#8211; Use this edge attribute as the edge weight</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rotated</strong> &#8211;
+The rotated tour</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="robotsp.construct.from_setslist">
+<code class="descclassname">robotsp.construct.</code><code class="descname">from_setslist</code><span class="sig-paren">(</span><em>setslist</em>, <em>distfn</em>, <em>args=()</em>, <em>weight='weight'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/construct.html#from_setslist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.construct.from_setslist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.construct.from_sorted_setslist">
+<code class="descclassname">robotsp.construct.</code><code class="descname">from_sorted_setslist</code><span class="sig-paren">(</span><em>setslist</em>, <em>distfn</em>, <em>args=()</em>, <em>weight='weight'</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/construct.html#from_sorted_setslist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.construct.from_sorted_setslist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-robotsp.metric">
+<span id="metrics"></span><h2>Metrics<a class="headerlink" href="#module-robotsp.metric" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="robotsp.metric.birrt_shortcut_traj_duration">
+<code class="descclassname">robotsp.metric.</code><code class="descname">birrt_shortcut_traj_duration</code><span class="sig-paren">(</span><em>qstart</em>, <em>qgoal</em>, <em>robot</em>, <em>max_iters</em>, <em>max_ppiters</em>, <em>try_swap=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#birrt_shortcut_traj_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.birrt_shortcut_traj_duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.cubic_traj_duration">
+<code class="descclassname">robotsp.metric.</code><code class="descname">cubic_traj_duration</code><span class="sig-paren">(</span><em>qa</em>, <em>qb</em>, <em>robot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#cubic_traj_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.cubic_traj_duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.euclidean_fn">
+<code class="descclassname">robotsp.metric.</code><code class="descname">euclidean_fn</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#euclidean_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.euclidean_fn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.euclidean_fn_int">
+<code class="descclassname">robotsp.metric.</code><code class="descname">euclidean_fn_int</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>weights=None</em>, <em>mult_factor=1000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#euclidean_fn_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.euclidean_fn_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.geo_fn">
+<code class="descclassname">robotsp.metric.</code><code class="descname">geo_fn</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#geo_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.geo_fn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.linear_traj_duration">
+<code class="descclassname">robotsp.metric.</code><code class="descname">linear_traj_duration</code><span class="sig-paren">(</span><em>qa</em>, <em>qb</em>, <em>robot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#linear_traj_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.linear_traj_duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.manhattan_fn">
+<code class="descclassname">robotsp.metric.</code><code class="descname">manhattan_fn</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#manhattan_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.manhattan_fn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.max_joint_diff_fn">
+<code class="descclassname">robotsp.metric.</code><code class="descname">max_joint_diff_fn</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#max_joint_diff_fn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.max_joint_diff_fn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.parabolic_traj_duration">
+<code class="descclassname">robotsp.metric.</code><code class="descname">parabolic_traj_duration</code><span class="sig-paren">(</span><em>qa</em>, <em>qb</em>, <em>robot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#parabolic_traj_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.parabolic_traj_duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.metric.retimed_traj_duration">
+<code class="descclassname">robotsp.metric.</code><code class="descname">retimed_traj_duration</code><span class="sig-paren">(</span><em>qa</em>, <em>qb</em>, <em>robot</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/metric.html#retimed_traj_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.metric.retimed_traj_duration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-robotsp.parser">
+<span id="parser"></span><h2>Parser<a class="headerlink" href="#module-robotsp.parser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="robotsp.parser.SUPPORTED_PROBLEM_TYPES">
+<em class="property">class </em><code class="descclassname">robotsp.parser.</code><code class="descname">SUPPORTED_PROBLEM_TYPES</code><a class="reference internal" href="_modules/robotsp/parser.html#SUPPORTED_PROBLEM_TYPES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.SUPPORTED_PROBLEM_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">enum.Enum</span></code></p>
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_PROBLEM_TYPES.GTSP">
+<code class="descname">GTSP</code><em class="property"> = &lt;SUPPORTED_PROBLEM_TYPES.GTSP: 2&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_PROBLEM_TYPES.GTSP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_PROBLEM_TYPES.TOUR">
+<code class="descname">TOUR</code><em class="property"> = &lt;SUPPORTED_PROBLEM_TYPES.TOUR: 3&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_PROBLEM_TYPES.TOUR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_PROBLEM_TYPES.TSP">
+<code class="descname">TSP</code><em class="property"> = &lt;SUPPORTED_PROBLEM_TYPES.TSP: 1&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_PROBLEM_TYPES.TSP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_FORMATS">
+<em class="property">class </em><code class="descclassname">robotsp.parser.</code><code class="descname">SUPPORTED_WEIGHT_FORMATS</code><a class="reference internal" href="_modules/robotsp/parser.html#SUPPORTED_WEIGHT_FORMATS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_FORMATS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">enum.Enum</span></code></p>
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_FORMATS.FULL_MATRIX">
+<code class="descname">FULL_MATRIX</code><em class="property"> = &lt;SUPPORTED_WEIGHT_FORMATS.FULL_MATRIX: 2&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_FORMATS.FULL_MATRIX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_FORMATS.LOWER_DIAG_ROW">
+<code class="descname">LOWER_DIAG_ROW</code><em class="property"> = &lt;SUPPORTED_WEIGHT_FORMATS.LOWER_DIAG_ROW: 1&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_FORMATS.LOWER_DIAG_ROW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_TYPES">
+<em class="property">class </em><code class="descclassname">robotsp.parser.</code><code class="descname">SUPPORTED_WEIGHT_TYPES</code><a class="reference internal" href="_modules/robotsp/parser.html#SUPPORTED_WEIGHT_TYPES"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">enum.Enum</span></code></p>
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_TYPES.EUC_2D">
+<code class="descname">EUC_2D</code><em class="property"> = &lt;SUPPORTED_WEIGHT_TYPES.EUC_2D: 2&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_TYPES.EUC_2D" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_TYPES.EXPLICIT">
+<code class="descname">EXPLICIT</code><em class="property"> = &lt;SUPPORTED_WEIGHT_TYPES.EXPLICIT: 4&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_TYPES.EXPLICIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_TYPES.GEO">
+<code class="descname">GEO</code><em class="property"> = &lt;SUPPORTED_WEIGHT_TYPES.GEO: 3&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_TYPES.GEO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="robotsp.parser.SUPPORTED_WEIGHT_TYPES.MAN_2D">
+<code class="descname">MAN_2D</code><em class="property"> = &lt;SUPPORTED_WEIGHT_TYPES.MAN_2D: 1&gt;</em><a class="headerlink" href="#robotsp.parser.SUPPORTED_WEIGHT_TYPES.MAN_2D" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="robotsp.parser.fn_euc_2d">
+<code class="descclassname">robotsp.parser.</code><code class="descname">fn_euc_2d</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/parser.html#fn_euc_2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.fn_euc_2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.parser.fn_man_2d">
+<code class="descclassname">robotsp.parser.</code><code class="descname">fn_man_2d</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/parser.html#fn_man_2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.fn_man_2d" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.parser.get_keyword_index">
+<code class="descclassname">robotsp.parser.</code><code class="descname">get_keyword_index</code><span class="sig-paren">(</span><em>lines</em>, <em>keyword</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/parser.html#get_keyword_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.get_keyword_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.parser.read_tsplib">
+<code class="descclassname">robotsp.parser.</code><code class="descname">read_tsplib</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/parser.html#read_tsplib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.read_tsplib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.parser.tsplib_to_dict">
+<code class="descclassname">robotsp.parser.</code><code class="descname">tsplib_to_dict</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/parser.html#tsplib_to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.tsplib_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.parser.write_gtsplib">
+<code class="descclassname">robotsp.parser.</code><code class="descname">write_gtsplib</code><span class="sig-paren">(</span><em>filename</em>, <em>graph</em>, <em>sets</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/parser.html#write_gtsplib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.parser.write_gtsplib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-robotsp.solver">
+<span id="solvers"></span><h2>Solvers<a class="headerlink" href="#module-robotsp.solver" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="robotsp.solver.SolverParameters">
+<em class="property">class </em><code class="descclassname">robotsp.solver.</code><code class="descname">SolverParameters</code><a class="reference internal" href="_modules/robotsp/solver.html#SolverParameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.SolverParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="robotsp.solver.SolverParameters.initialized">
+<code class="descname">initialized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#SolverParameters.initialized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.SolverParameters.initialized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="robotsp.solver.compute_cspace_trajectories">
+<code class="descclassname">robotsp.solver.</code><code class="descname">compute_cspace_trajectories</code><span class="sig-paren">(</span><em>robot</em>, <em>cgraph</em>, <em>ctour</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#compute_cspace_trajectories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.compute_cspace_trajectories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.solver.compute_execution_time">
+<code class="descclassname">robotsp.solver.</code><code class="descname">compute_execution_time</code><span class="sig-paren">(</span><em>trajectories</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#compute_execution_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.compute_execution_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.solver.compute_robot_configurations">
+<code class="descclassname">robotsp.solver.</code><code class="descname">compute_robot_configurations</code><span class="sig-paren">(</span><em>robot</em>, <em>targets</em>, <em>params</em>, <em>qstart=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#compute_robot_configurations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.compute_robot_configurations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.solver.generate_gtsp_graph">
+<code class="descclassname">robotsp.solver.</code><code class="descname">generate_gtsp_graph</code><span class="sig-paren">(</span><em>robot</em>, <em>targets</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#generate_gtsp_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.generate_gtsp_graph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.solver.glkh_solver">
+<code class="descclassname">robotsp.solver.</code><code class="descname">glkh_solver</code><span class="sig-paren">(</span><em>robot</em>, <em>targets</em>, <em>params</em>, <em>path='~/.ros'</em>, <em>cache=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#glkh_solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.glkh_solver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.solver.robotsp_solver">
+<code class="descclassname">robotsp.solver.</code><code class="descname">robotsp_solver</code><span class="sig-paren">(</span><em>robot</em>, <em>targets</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#robotsp_solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.robotsp_solver" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>robot</strong> (<em>orpy.robot</em>) &#8211; OpenRAVE robot</li>
+<li><strong>targets</strong> (<em>list</em>) &#8211; List of rays (<cite>orpy.Ray</cite>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="robotsp.solver.tsp_cspace_solver">
+<code class="descclassname">robotsp.solver.</code><code class="descname">tsp_cspace_solver</code><span class="sig-paren">(</span><em>robot</em>, <em>targets</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/solver.html#tsp_cspace_solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.solver.tsp_cspace_solver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-robotsp.tsp">
+<span id="traveling-salesman-problem"></span><h2>Traveling Salesman Problem<a class="headerlink" href="#module-robotsp.tsp" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="robotsp.tsp.compute_tour_cost">
+<code class="descclassname">robotsp.tsp.</code><code class="descname">compute_tour_cost</code><span class="sig-paren">(</span><em>graph</em>, <em>tour</em>, <em>weight='weight'</em>, <em>is_cycle=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/tsp.html#compute_tour_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.tsp.compute_tour_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.tsp.nearest_neighbor">
+<code class="descclassname">robotsp.tsp.</code><code class="descname">nearest_neighbor</code><span class="sig-paren">(</span><em>graph</em>, <em>restarts=10</em>, <em>weight='weight'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/tsp.html#nearest_neighbor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.tsp.nearest_neighbor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursive Nearest-Neighbor algorithm to solve the traveling salesman problem.</p>
+<p>These are the steps of the algorithm for each restart:</p>
+<ol class="arabic simple">
+<li>Start on a random node as current node;</li>
+<li>Find the shortest edge connecting the current node with an unvisited node;</li>
+<li>Mark the found node as current and visited;</li>
+<li>Go to step 2 until all nodes are visited</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>graph</strong> (<em>NetworkX graph</em>) &#8211; </li>
+<li><strong>restarts</strong> (<em>int, optional (default=10)</em>) &#8211; Number of times the algorithm will try a different, randomly selected, node
+as starting point</li>
+<li><strong>weight</strong> (<em>string, optional (default='weight')</em>) &#8211; Edge data key corresponding to the edge weight</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>best_tour</strong> &#8211;
+The sequence for visiting all the nodes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="robotsp.tsp.rotate_tour">
+<code class="descclassname">robotsp.tsp.</code><code class="descname">rotate_tour</code><span class="sig-paren">(</span><em>tour</em>, <em>start=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/tsp.html#rotate_tour"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.tsp.rotate_tour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotate a tour so that it starts at the given <code class="docutils literal"><span class="pre">start</span></code> index. This is
+equivalent to rotate the input list to the left.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tour</strong> (<em>list</em>) &#8211; The input tour</li>
+<li><strong>start</strong> (<em>int, optional (default=0)</em>) &#8211; New start index for the tour</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rotated</strong> &#8211;
+The rotated tour</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="robotsp.tsp.scip_solver">
+<code class="descclassname">robotsp.tsp.</code><code class="descname">scip_solver</code><span class="sig-paren">(</span><em>graph</em>, <em>weight='weight'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/tsp.html#scip_solver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.tsp.scip_solver" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="robotsp.tsp.two_opt">
+<code class="descclassname">robotsp.tsp.</code><code class="descname">two_opt</code><span class="sig-paren">(</span><em>graph</em>, <em>weight='weight'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/robotsp/tsp.html#two_opt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#robotsp.tsp.two_opt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="citing.html" class="btn btn-neutral float-right" title="Citing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="install.html" class="btn btn-neutral" title="Install" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, CRI Group.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
