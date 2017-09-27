@@ -59,4 +59,4 @@ script:
   - catkin_make
   - source devel/setup.bash
   - cd ~/catkin_ws/src/robotsp/tests
-  - nosetests -v
+  - nosetests -v test_parser
