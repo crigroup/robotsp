@@ -12,7 +12,7 @@ developed by [CRI Group](http://www.ntu.edu.sg/home/cuong/),
 
 ### Documentation
 * Throughout the various files in this repository.
-* Documentation: https://crigroup.github.io/robotsp/
+* Website: https://crigroup.github.io/robotsp/
 
 ## Travis - Continuous Integration
 
