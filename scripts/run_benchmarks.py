@@ -12,9 +12,8 @@ import progressbar as pbar
 import openravepy as orpy
 from collections import defaultdict
 # Utils
-import criutils
-import raveutils.conversions as orconv
-import raveutils.kinematics as orkin
+import criutils as cu
+import raveutils as ru
 # RoboTSP
 import robotsp as rtsp
 
@@ -297,10 +296,9 @@ def others_benchmarking(f, robot, targets, targets_indices_list, args):
 if __name__ == '__main__':
   args = parse_args()
   np.set_printoptions(precision=6, suppress=True)
-  criutils.logger.initialize_logging(format_level=logging.INFO)
+  cu.logger.initialize_logging(format_level=logging.INFO)
   # Load the OpenRAVE environment
-  uri = 'package://robotsp/data/worlds/airbus_challenge.env.xml'
-  world_xml = resource_retriever.get_filename(uri, use_protocol=False)
+  world_xml = 'worlds/airbus_challenge.env.xml'
   env = orpy.Environment()
   if not env.Load(world_xml):
     logger.error('Failed to load: {0}'.format(world_xml))
@@ -315,10 +313,10 @@ if __name__ == '__main__':
     robot.SetActiveDOFValues(qhome)
   # Load IKFast and links stats
   iktype = orpy.IkParameterizationType.Transform6D
-  if not orkin.load_ikfast(robot, iktype):
+  if not ru.kinematis.load_ikfast(robot, iktype):
     logger.error('Failed to load IKFast {0}'.format(iktype.name))
     exit()
-  success = orkin.load_link_stats(robot, xyzdelta=0.01)
+  success = ru.kinematis.load_link_stats(robot, xyzdelta=0.01)
   # The robot velocity limits are quite high in the model
   robot.SetDOFVelocityLimits([1., 0.7, 0.7, 1., 0.7, 1.57])
   robot.SetDOFAccelerationLimits([5., 4.25, 4.25, 5.25, 6., 8.])
@@ -328,7 +326,7 @@ if __name__ == '__main__':
   for link in panel.GetLinks():
     lname = link.GetName()
     if lname.startswith('hole'):
-      targets.append( orconv.to_ray(link.GetTransform()) )
+      targets.append( ru.conversions.to_ray(link.GetTransform()) )
   num_targets = len(targets)
   # Select the targets subsets randomly
   np.random.seed(1)

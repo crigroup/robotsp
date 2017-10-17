@@ -1,4 +1,6 @@
+# RoboTSP
+- git: {local-name: robotsp, uri: 'https://github.com/crigroup/robotsp.git', version: master}
 # Maintained dependencies
 - git: {local-name: criutils, uri: 'https://github.com/crigroup/criutils.git', version: master}
-- git: {local-name: lkh, uri: 'https://github.com/crigroup/lkh.git', version: master}
 - git: {local-name: raveutils, uri: 'https://github.com/crigroup/raveutils.git', version: master}
+- git: {local-name: openrave_catkin, uri: 'https://github.com/crigroup/openrave_catkin.git', version: master}

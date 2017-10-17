@@ -16,7 +16,7 @@
   <depend>lkh_solver</depend>
   <depend>raveutils</depend>
 
-  <exec_depend>python-enum</exec_depend>
+  <exec_depend>python-enum34</exec_depend>
   <exec_depend>python-h5py</exec_depend>
   <exec_depend>python-matplotlib</exec_depend>
   <exec_depend>python-networkx</exec_depend>
