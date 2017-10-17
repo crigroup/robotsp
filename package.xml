@@ -24,6 +24,7 @@
   <exec_depend>python-pygraphviz</exec_depend>
   <exec_depend>python-progressbar</exec_depend>
   <exec_depend>python-scipy</exec_depend>
+  <exec_depend>tf</exec_depend>
 
   <test_depend>python-mock</test_depend>
 
