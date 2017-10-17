@@ -136,8 +136,8 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
-<span class="c1"># Own modules</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metric</span>
+<span class="c1"># Local modules</span>
+<span class="kn">import</span> <span class="nn">robotsp</span> <span class="kn">as</span> <span class="nn">rtsp</span>
 
 
 <div class="viewcode-block" id="SUPPORTED_PROBLEM_TYPES"><a class="viewcode-back" href="../../reference.html#robotsp.parser.SUPPORTED_PROBLEM_TYPES">[docs]</a><span class="k">class</span> <span class="nc">SUPPORTED_PROBLEM_TYPES</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
@@ -156,11 +156,11 @@
   <span class="n">FULL_MATRIX</span>     <span class="o">=</span> <span class="mi">2</span></div>
 
 <div class="viewcode-block" id="fn_euc_2d"><a class="viewcode-back" href="../../reference.html#robotsp.parser.fn_euc_2d">[docs]</a><span class="k">def</span> <span class="nf">fn_euc_2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-  <span class="n">distance</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="n">distance</span> <span class="o">=</span> <span class="n">rtsp</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
   <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="fn_man_2d"><a class="viewcode-back" href="../../reference.html#robotsp.parser.fn_man_2d">[docs]</a><span class="k">def</span> <span class="nf">fn_man_2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-  <span class="n">distance</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">manhattan_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="n">distance</span> <span class="o">=</span> <span class="n">rtsp</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">manhattan_fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
   <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="get_keyword_index"><a class="viewcode-back" href="../../reference.html#robotsp.parser.get_keyword_index">[docs]</a><span class="k">def</span> <span class="nf">get_keyword_index</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">keyword</span><span class="p">):</span>
@@ -184,7 +184,7 @@
   <span class="k">elif</span> <span class="n">edge_weight_type</span> <span class="o">==</span> <span class="n">SUPPORTED_WEIGHT_TYPES</span><span class="o">.</span><span class="n">EUC_2D</span><span class="p">:</span>
     <span class="n">distfn</span> <span class="o">=</span> <span class="n">fn_euc_2d</span>
   <span class="k">elif</span> <span class="n">edge_weight_type</span> <span class="o">==</span> <span class="n">SUPPORTED_WEIGHT_TYPES</span><span class="o">.</span><span class="n">GEO</span><span class="p">:</span>
-    <span class="n">distfn</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">geo_fn</span>
+    <span class="n">distfn</span> <span class="o">=</span> <span class="n">rtsp</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">geo_fn</span>
   <span class="c1"># Populate the graph</span>
   <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
   <span class="n">dimension</span> <span class="o">=</span> <span class="n">tsp_dict</span><span class="p">[</span><span class="s1">&#39;DIMENSION&#39;</span><span class="p">]</span>

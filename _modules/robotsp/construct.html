@@ -135,8 +135,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
 <span class="kn">import</span> <span class="nn">progressbar</span> <span class="kn">as</span> <span class="nn">pbar</span>
-<span class="c1"># Own modules</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">metric</span>
+<span class="c1"># Local modules</span>
+<span class="kn">import</span> <span class="nn">robotsp</span> <span class="kn">as</span> <span class="nn">rtsp</span>
 
 
 <div class="viewcode-block" id="from_coordinate_list"><a class="viewcode-back" href="../../reference.html#robotsp.construct.from_coordinate_list">[docs]</a><span class="k">def</span> <span class="nf">from_coordinate_list</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">distfn</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
@@ -161,7 +161,7 @@
 <span class="sd">    The rotated tour</span>
 <span class="sd">  &quot;&quot;&quot;</span>
   <span class="k">if</span> <span class="n">distfn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-    <span class="n">distfn</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
+    <span class="n">distfn</span> <span class="o">=</span> <span class="n">rtsp</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
   <span class="n">num_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
   <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
@@ -174,7 +174,7 @@
 
 <div class="viewcode-block" id="from_setslist"><a class="viewcode-back" href="../../reference.html#robotsp.construct.from_setslist">[docs]</a><span class="k">def</span> <span class="nf">from_setslist</span><span class="p">(</span><span class="n">setslist</span><span class="p">,</span> <span class="n">distfn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">):</span>
   <span class="k">if</span> <span class="n">distfn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-    <span class="n">distfn</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
+    <span class="n">distfn</span> <span class="o">=</span> <span class="n">rtsp</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
   <span class="n">set_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">setslist</span><span class="p">]</span>
   <span class="n">num_sets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">setslist</span><span class="p">)</span>
   <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
@@ -203,7 +203,7 @@
 <div class="viewcode-block" id="from_sorted_setslist"><a class="viewcode-back" href="../../reference.html#robotsp.construct.from_sorted_setslist">[docs]</a><span class="k">def</span> <span class="nf">from_sorted_setslist</span><span class="p">(</span><span class="n">setslist</span><span class="p">,</span> <span class="n">distfn</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span>
                                                                 <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
   <span class="k">if</span> <span class="n">distfn</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-    <span class="n">distfn</span> <span class="o">=</span> <span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
+    <span class="n">distfn</span> <span class="o">=</span> <span class="n">rtsp</span><span class="o">.</span><span class="n">metric</span><span class="o">.</span><span class="n">euclidean_fn</span>
   <span class="n">set_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">setslist</span><span class="p">]</span>
   <span class="n">num_sets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">setslist</span><span class="p">)</span>
   <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
