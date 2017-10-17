@@ -8,7 +8,7 @@ import resource_retriever
 import warnings
 from mock import patch
 # Tested modules
-from robotsp import parser, tsp
+import robotsp as rtsp
 
 
 class Test_tsp_Module(unittest.TestCase):
@@ -18,7 +18,7 @@ class Test_tsp_Module(unittest.TestCase):
     np.set_printoptions(precision=6, suppress=True)
     uri = 'package://lkh_solver/tsplib/berlin52.tsp'
     filename = resource_retriever.get_filename(uri, use_protocol=False)
-    cls.graph = parser.read_tsplib(filename)
+    cls.graph = rtsp.parser.read_tsplib(filename)
     print('---')
     print('Processing TSPLIB instance:', filename)
 
@@ -30,7 +30,7 @@ class Test_tsp_Module(unittest.TestCase):
     self.assertEqual(len(tour), len(set(tour)))
     self.assertEqual(len(tour), self.graph.number_of_nodes())
     # Report
-    cost = tsp.compute_tour_cost(self.graph, tour, weight='weight')
+    cost = rtsp.tsp.compute_tour_cost(self.graph, tour, weight='weight')
     print('') # Dummy line
     print('Cost: {:.3f}'.format(cost))
     if duration is not None:
@@ -45,13 +45,13 @@ class Test_tsp_Module(unittest.TestCase):
     for name, bounds in names:
       uri = 'package://lkh_solver/tsplib/{}.tsp'.format(name)
       filename = resource_retriever.get_filename(uri, use_protocol=False)
-      graph = parser.read_tsplib(filename)
-      tour = tsp.scip_solver(graph)
-      cost = tsp.compute_tour_cost(graph, tour)
+      graph = rtsp.parser.read_tsplib(filename)
+      tour = rtsp.tsp.scip_solver(graph)
+      cost = rtsp.tsp.compute_tour_cost(graph, tour)
       self.assertEqual(cost, bounds)
 
   def test_nearest_neighbor(self):
-    self._run_tsp_test(tsp.nearest_neighbor)
+    self._run_tsp_test(rtsp.tsp.nearest_neighbor)
 
   @patch('warnings.warn')
   def test_scip_solver(self, mock_warnings):
@@ -63,9 +63,9 @@ class Test_tsp_Module(unittest.TestCase):
       warnings.warn(msg, ImportWarning)
       found_pyscipopt = False
     if found_pyscipopt:
-      self._run_tsp_test(tsp.scip_solver)
+      self._run_tsp_test(rtsp.tsp.scip_solver)
     else:
       self.assertTrue(mock_warnings.called)
 
   def test_two_opt(self):
-    self._run_tsp_test(tsp.two_opt)
+    self._run_tsp_test(rtsp.tsp.two_opt)

@@ -313,10 +313,10 @@ if __name__ == '__main__':
     robot.SetActiveDOFValues(qhome)
   # Load IKFast and links stats
   iktype = orpy.IkParameterizationType.Transform6D
-  if not ru.kinematis.load_ikfast(robot, iktype):
+  if not ru.kinematics.load_ikfast(robot, iktype):
     logger.error('Failed to load IKFast {0}'.format(iktype.name))
     exit()
-  success = ru.kinematis.load_link_stats(robot, xyzdelta=0.01)
+  success = ru.kinematics.load_link_stats(robot, xyzdelta=0.01)
   # The robot velocity limits are quite high in the model
   robot.SetDOFVelocityLimits([1., 0.7, 0.7, 1., 0.7, 1.57])
   robot.SetDOFAccelerationLimits([5., 4.25, 4.25, 5.25, 6., 8.])

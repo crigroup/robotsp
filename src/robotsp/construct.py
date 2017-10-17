@@ -3,8 +3,8 @@ import itertools
 import numpy as np
 import networkx as nx
 import progressbar as pbar
-# Own modules
-from . import metric
+# Local modules
+import robotsp as rtsp
 
 
 def from_coordinate_list(coordinates, distfn=None, args=(), weight='weight'):
@@ -29,7 +29,7 @@ def from_coordinate_list(coordinates, distfn=None, args=(), weight='weight'):
     The rotated tour
   """
   if distfn is None:
-    distfn = metric.euclidean_fn
+    distfn = rtsp.metric.euclidean_fn
   num_nodes = len(coordinates)
   graph = nx.Graph()
   for i in xrange(num_nodes):
@@ -42,7 +42,7 @@ def from_coordinate_list(coordinates, distfn=None, args=(), weight='weight'):
 
 def from_setslist(setslist, distfn, args=(), weight='weight'):
   if distfn is None:
-    distfn = metric.euclidean_fn
+    distfn = rtsp.metric.euclidean_fn
   set_sizes = [len(s) for s in setslist]
   num_sets = len(setslist)
   graph = nx.Graph()
@@ -71,7 +71,7 @@ def from_setslist(setslist, distfn, args=(), weight='weight'):
 def from_sorted_setslist(setslist, distfn, args=(), weight='weight',
                                                                 verbose=False):
   if distfn is None:
-    distfn = metric.euclidean_fn
+    distfn = rtsp.metric.euclidean_fn
   set_sizes = [len(s) for s in setslist]
   num_sets = len(setslist)
   graph = nx.Graph()

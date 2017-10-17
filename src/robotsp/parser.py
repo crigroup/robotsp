@@ -4,8 +4,8 @@ import enum
 import math
 import numpy as np
 import networkx as nx
-# Own modules
-from . import metric
+# Local modules
+import robotsp as rtsp
 
 
 class SUPPORTED_PROBLEM_TYPES(enum.Enum):
@@ -24,11 +24,11 @@ class SUPPORTED_WEIGHT_FORMATS(enum.Enum):
   FULL_MATRIX     = 2
 
 def fn_euc_2d(x, y):
-  distance = metric.euclidean_fn(x, y)
+  distance = rtsp.metric.euclidean_fn(x, y)
   return int(distance + 0.5)
 
 def fn_man_2d(x, y):
-  distance = metric.manhattan_fn(x, y)
+  distance = rtsp.metric.manhattan_fn(x, y)
   return int(distance + 0.5)
 
 def get_keyword_index(lines, keyword):
@@ -52,7 +52,7 @@ def read_tsplib(filename):
   elif edge_weight_type == SUPPORTED_WEIGHT_TYPES.EUC_2D:
     distfn = fn_euc_2d
   elif edge_weight_type == SUPPORTED_WEIGHT_TYPES.GEO:
-    distfn = metric.geo_fn
+    distfn = rtsp.metric.geo_fn
   # Populate the graph
   graph = nx.Graph()
   dimension = tsp_dict['DIMENSION']

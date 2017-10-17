@@ -2,8 +2,6 @@
 import itertools
 import numpy as np
 import networkx as nx
-# Own modules
-from . import metric
 
 
 def compute_tour_cost(graph, tour, weight='weight', is_cycle=True):

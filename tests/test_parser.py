@@ -6,7 +6,7 @@ import unittest
 import numpy as np
 import resource_retriever
 # Tested module
-from robotsp import parser
+import robotsp as rtsp
 
 
 class Test_tsp_Module(unittest.TestCase):
@@ -29,8 +29,8 @@ class Test_tsp_Module(unittest.TestCase):
       num_nodes = np.max([int(s) for s in re.findall(r'\d+', filename)])
       # Construct the graph only for instances smaller than 100 nodes
       if num_nodes < 100:
-        g = parser.read_tsplib(filename)
+        g = rtsp.parser.read_tsplib(filename)
 
   def test_tsplib_to_dict(self):
     # Parse all the available instances
-    [parser.tsplib_to_dict(f) for f in self.files]
+    [rtsp.parser.tsplib_to_dict(f) for f in self.files]

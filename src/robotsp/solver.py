@@ -7,20 +7,19 @@ import networkx as nx
 import openravepy as orpy
 from subprocess import Popen, PIPE
 # Utils
-import raveutils.kinematics as orkin
-import raveutils.planning as orplan
-# Own modules
-from . import construct, metric, parser, tsp
+import raveutils as ru
+# Local modules
+import robotsp as rtsp
 
 
 class SolverParameters(object):
   def __init__(self):
     # Task space parameters
-    self.tsp_solver = tsp.two_opt
-    self.tspace_metric = metric.euclidean_fn
+    self.tsp_solver = rtsp.tsp.two_opt
+    self.tspace_metric = rtsp.metric.euclidean_fn
     self.tspace_metric_args = ()
     # Configuration space parameters
-    self.cspace_metric = metric.max_joint_diff_fn
+    self.cspace_metric = rtsp.metric.max_joint_diff_fn
     self.cspace_metric_args = None
     # kinematics parameters
     self.iktype = orpy.IkParameterizationType.Transform6D
@@ -83,7 +82,7 @@ def compute_cspace_trajectories(robot, cgraph, ctour, params):
     starttime = time.time()
     with robot:
       robot.SetActiveDOFValues(qstart)
-      traj = orplan.plan_to_joint_configuration(robot, qgoal, params.planner,
+      traj = ru.planning.plan_to_joint_configuration(robot, qgoal, params.planner,
                 params.max_iters, params.max_ppiters, try_swap=params.try_swap)
     cputime = time.time() - starttime
     cpu_times.append(cputime)
@@ -108,7 +107,7 @@ def compute_robot_configurations(robot, targets, params, qstart=None):
   for i,ray in enumerate(targets):
     newpos = ray.pos() - params.standoff*ray.dir()
     newray = orpy.Ray(newpos, ray.dir())
-    solutions = orkin.find_ik_solutions(robot, newray, params.iktype,
+    solutions = ru.kinematics.find_ik_solutions(robot, newray, params.iktype,
                                   collision_free=True, freeinc=params.step_size)
     if len(solutions) == 0:
       raise Exception('Failed to find IK solution for target %d' % i)
@@ -157,8 +156,8 @@ def glkh_solver(robot, targets, params, path='~/.ros', cache=None):
   # Generate/load the GTSP graph
   starttime = time.time()
   if cache is None:
-    graph, sets = construct.from_setslist(configurations, params.cspace_metric,
-                                                      params.cspace_metric_args)
+    graph, sets = rtsp.construct.from_setslist(configurations,
+                                params.cspace_metric, params.cspace_metric_args)
   else:
     graph, sets = cache
   metric_cpu_time = time.time() - starttime
@@ -167,7 +166,7 @@ def glkh_solver(robot, targets, params, path='~/.ros', cache=None):
   num_sets = len(sets)
   gtsp_file = os.path.join(working_path, '{0}task{1}.gtsp'.format(num_sets,
                                                                   num_nodes))
-  basename = parser.write_gtsplib(gtsp_file, graph, sets, params)
+  basename = rtsp.parser.write_gtsplib(gtsp_file, graph, sets, params)
   # Call the glkh solver
   if params.trace_level > 0:
     outpipe = None
@@ -187,10 +186,10 @@ def glkh_solver(robot, targets, params, path='~/.ros', cache=None):
     trajectories = [None] * num_sets
     solver_cpu_time = time.time() - solver_starttime
   else:
-    tour = (np.int0(parser.read_tsplib(tour_filename)) - 1).tolist()
-    tour = tsp.rotate_tour(tour, start=0) # Start from robot home
-    tour.append(0)                        # Go back to robot home
-    ccost = tsp.compute_tour_cost(graph, tour, is_cycle=False)
+    tour = (np.int0(rtsp.parser.read_tsplib(tour_filename)) - 1).tolist()
+    tour = rtsp.tsp.rotate_tour(tour, start=0)  # Start from robot home
+    tour.append(0)                              # Go back to robot home
+    ccost = rtsp.tsp.compute_tour_cost(graph, tour, is_cycle=False)
     gtsp_cpu_time = time.time() - starttime
     # Compute the c-space trajectories
     trajectories, traj_cpu_times = compute_cspace_trajectories(robot, graph,
@@ -244,17 +243,17 @@ def robotsp_solver(robot, targets, params):
       position = manip.GetEndEffectorTransform()[:3,3]
       coordinates.append(position)
   # Step 1: Find the task-space tour
-  tgraph = construct.from_coordinate_list(coordinates,
+  tgraph = rtsp.construct.from_coordinate_list(coordinates,
                     distfn=params.tspace_metric, args=params.tspace_metric_args)
   starttime = time.time()
   ttour = params.tsp_solver(tgraph)
-  ttour = tsp.rotate_tour(ttour, start=0)  # Start from robot home
+  ttour = rtsp.tsp.rotate_tour(ttour, start=0)  # Start from robot home
   tsp_cpu_time = time.time() - starttime
   # Step 2: Find optimal robot configurations for the order obtained in step 1
   setslist = [configurations[n] for n in ttour]
   setslist += [[qhome]]
   starttime = time.time()
-  cgraph, bins = construct.from_sorted_setslist(setslist,
+  cgraph, bins = rtsp.construct.from_sorted_setslist(setslist,
                     distfn=params.cspace_metric, args=params.cspace_metric_args)
   metric_cpu_time = time.time() - starttime
   starttime = time.time()
@@ -273,8 +272,8 @@ def robotsp_solver(robot, targets, params):
   info['ttour'] = ttour
   info['ctour'] = ctour
   # Return the costs
-  info['tcost'] = tsp.compute_tour_cost(tgraph, ttour, is_cycle=True)
-  info['ccost'] = tsp.compute_tour_cost(cgraph, ctour, is_cycle=False)
+  info['tcost'] = rtsp.tsp.compute_tour_cost(tgraph, ttour, is_cycle=True)
+  info['ccost'] = rtsp.tsp.compute_tour_cost(cgraph, ctour, is_cycle=False)
   # Return the cpu times
   info['ik_cpu_time'] = ik_cpu_time
   info['tsp_cpu_time'] = tsp_cpu_time
@@ -297,7 +296,7 @@ def tsp_cspace_solver(robot, targets, params):
     qhome = np.array(params.qhome)
   with robot:
     robot.SetActiveDOFValues(qhome)
-    home_yoshi = orkin.compute_yoshikawa_index(robot, params.jac_link_name,
+    home_yoshi = ru.kinematics.compute_yoshikawa_index(robot, params.jac_link_name,
                             params.translation_only, params.penalize_jnt_limits)
   # Select the IK solution with the best manipulability for each ray
   cspace_nodes = [qhome]
@@ -305,7 +304,7 @@ def tsp_cspace_solver(robot, targets, params):
   for i,ray in enumerate(targets):
     newpos = ray.pos() - params.standoff*ray.dir()
     newray = orpy.Ray(newpos, ray.dir())
-    solutions = orkin.find_ik_solutions(robot, newray, params.iktype,
+    solutions = ru.kinematics.find_ik_solutions(robot, newray, params.iktype,
                             collision_free=True, freeinc=params.step_size)
     if len(solutions) == 0:
       raise Exception('Failed to find IK solution for target %d' % i)
@@ -313,7 +312,7 @@ def tsp_cspace_solver(robot, targets, params):
     for j,q in enumerate(solutions):
       with robot:
         robot.SetActiveDOFValues(q)
-        yoshikawa = orkin.compute_yoshikawa_index(robot, params.jac_link_name,
+        yoshikawa = ru.kinematics.compute_yoshikawa_index(robot, params.jac_link_name,
                             params.translation_only, params.penalize_jnt_limits)
         if yoshikawa > max_yoshikawa:
           max_yoshikawa = yoshikawa
@@ -321,10 +320,10 @@ def tsp_cspace_solver(robot, targets, params):
     cspace_nodes.append(solutions[max_idx])
     indices.append(max_yoshikawa)
   # Solve the TSP on the configuration space
-  cgraph = construct.from_coordinate_list(cspace_nodes, params.cspace_metric,
-                                                      params.cspace_metric_args)
+  cgraph = rtsp.construct.from_coordinate_list(cspace_nodes,
+                                params.cspace_metric, params.cspace_metric_args)
   ctour = params.tsp_solver(cgraph)
-  ctour = tsp.rotate_tour(ctour, start=0) # Start from robot home
+  ctour = rtsp.tsp.rotate_tour(ctour, start=0) # Start from robot home
   ctour.append(0)                         # Go back to the robot home
   # Compute the c-space trajectories
   trajectories, traj_cpu_times = compute_cspace_trajectories(robot, cgraph,
@@ -339,7 +338,7 @@ def tsp_cspace_solver(robot, targets, params):
   # Return the tour
   info['ctour'] = ctour
   # Return the costs
-  info['ccost'] = tsp.compute_tour_cost(cgraph, ctour, is_cycle=False)
+  info['ccost'] = rtsp.tsp.compute_tour_cost(cgraph, ctour, is_cycle=False)
   # Return the cpu times
   info['traj_cpu_times'] = traj_cpu_times
   info['solver_cpu_time'] = solver_cpu_time

@@ -2,8 +2,8 @@
 import math
 import itertools
 import numpy as np
+import raveutils as ru
 import openravepy as orpy
-import raveutils.planning as orplan
 
 
 def manhattan_fn(x, y, weights=None):
@@ -51,8 +51,8 @@ def max_joint_diff_fn(x, y, weights=None):
 
 def birrt_shortcut_traj_duration(qstart, qgoal, robot, max_iters, max_ppiters,
                                                                 try_swap=False):
-  traj = orplan.plan_to_joint_configuration(robot, qgoal, 'BiRRT', max_iters,
-                                                max_ppiters, try_swap=try_swap)
+  traj = ru.planning.plan_to_joint_configuration(robot, qgoal, 'BiRRT',
+                                    max_iters, max_ppiters, try_swap=try_swap)
   duration = traj.GetDuration() if traj is not None else float('inf')
   return duration
 
@@ -69,8 +69,8 @@ def parabolic_traj_duration(qa, qb, robot):
   return duration
 
 def retimed_traj_duration(qa, qb, robot, method):
-  traj = orplan.trajectory_from_waypoints(robot, [qa, qb])
-  status = orplan.retime_trajectory(robot, traj, method)
+  traj = ru.planning.trajectory_from_waypoints(robot, [qa, qb])
+  status = ru.planning.retime_trajectory(robot, traj, method)
   if status == orpy.PlannerStatus.HasSolution:
     duration = traj.GetDuration()
   else:
