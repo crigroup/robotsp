@@ -47,6 +47,9 @@ install:
   # Delete the .rosinstall version and use the branch we are testing
   - rm -rf robotsp/
   - ln -s $CI_SOURCE_PATH .
+  # Install this dependencies from source until they are released in indigo
+  - git clone https://github.com/crigroup/criutils.git
+  - git clone https://github.com/crigroup/lkh.git
 
 # Install all dependencies
 before_script:
