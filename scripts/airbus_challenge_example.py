@@ -4,6 +4,7 @@ import logging
 import numpy as np
 import openravepy as orpy
 import tf.transformations as tr
+import rospkg
 # Utils
 import criutils as cu
 import raveutils as ru
@@ -42,7 +43,8 @@ if __name__ == '__main__':
   logger = logging.getLogger('rtsp_challenge')
   cu.logger.initialize_logging(format_level=logging.INFO)
   # Load OpenRAVE environment
-  world_xml = 'worlds/airbus_challenge.env.xml'
+  rospack = rospkg.RosPack()
+  world_xml = (rospack.get_path('raveutils')+'/data/worlds/airbus_challenge.env.xml')
   env = orpy.Environment()
   logger.info('Loading OpenRAVE environment: {}'.format(world_xml))
   if not env.Load(world_xml):
