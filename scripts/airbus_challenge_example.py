@@ -3,8 +3,8 @@ import time
 import logging
 import numpy as np
 import openravepy as orpy
-import tf.transformations as tr
 # Utils
+import baldor as br
 import criutils as cu
 import raveutils as ru
 # RoboTSP
@@ -104,7 +104,7 @@ if __name__ == '__main__':
   while env.GetViewer() is None:
     time.sleep(0.1)
   viewer = env.GetViewer()
-  T = tr.euler_matrix(*np.deg2rad([-160,0,-90]))
+  T = br.euler.to_transform(*np.deg2rad([-160,0,-90]))
   T[:3,3] = [-0.125, 0, 1.65]
   viewer.SetCamera(T, 1.85)
   handles = visualize_trajectories(robot, trajs, speed)
