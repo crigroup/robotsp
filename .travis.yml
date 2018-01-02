@@ -49,8 +49,10 @@ install:
   # Delete the .rosinstall version and use the branch we are testing
   - rm -rf robotsp/
   - ln -s $CI_SOURCE_PATH .
-  # TODO: Remove this once baldor is released into the public repositories
+  # When installing from source, you need the latest version of these pkgs
   - git clone https://github.com/crigroup/baldor.git
+  - git clone https://github.com/crigroup/criutils.git
+  - git clone https://github.com/crigroup/lkh.git
 
 # Install all dependencies
 before_script:
