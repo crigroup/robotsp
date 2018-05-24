@@ -296,8 +296,8 @@ def tsp_cspace_solver(robot, targets, params):
     qhome = np.array(params.qhome)
   with robot:
     robot.SetActiveDOFValues(qhome)
-    home_yoshi = ru.kinematics.compute_yoshikawa_index(robot, params.jac_link_name,
-                            params.translation_only, params.penalize_jnt_limits)
+    home_yoshi = ru.kinematics.compute_yoshikawa_index(robot,
+      params.jac_link_name, params.translation_only, params.penalize_jnt_limits)
   # Select the IK solution with the best manipulability for each ray
   cspace_nodes = [qhome]
   indices = [home_yoshi]
@@ -312,8 +312,9 @@ def tsp_cspace_solver(robot, targets, params):
     for j,q in enumerate(solutions):
       with robot:
         robot.SetActiveDOFValues(q)
-        yoshikawa = ru.kinematics.compute_yoshikawa_index(robot, params.jac_link_name,
-                            params.translation_only, params.penalize_jnt_limits)
+        yoshikawa = ru.kinematics.compute_yoshikawa_index(robot,
+                                params.jac_link_name, params.translation_only,
+                                                    params.penalize_jnt_limits)
         if yoshikawa > max_yoshikawa:
           max_yoshikawa = yoshikawa
           max_idx = j

@@ -11,11 +11,10 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>criutils</depend>
-  <depend>glkh_solver</depend>
-  <depend>lkh_solver</depend>
-  <depend>raveutils</depend>
-
+  <exec_depend>baldor</exec_depend>
+  <exec_depend>criutils</exec_depend>
+  <exec_depend>glkh_solver</exec_depend>
+  <exec_depend>lkh_solver</exec_depend>
   <exec_depend>python-enum34</exec_depend>
   <exec_depend>python-h5py</exec_depend>
   <exec_depend>python-matplotlib</exec_depend>
@@ -24,7 +23,8 @@
   <exec_depend>python-pygraphviz</exec_depend>
   <exec_depend>python-progressbar</exec_depend>
   <exec_depend>python-scipy</exec_depend>
-  <exec_depend>tf</exec_depend>
+  <exec_depend>raveutils</exec_depend>
+  <exec_depend>resource_retriever</exec_depend>
 
   <test_depend>python-mock</test_depend>
 

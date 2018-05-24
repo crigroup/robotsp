@@ -1,7 +1,11 @@
 #!/usr/bin/env python
+import os
 import itertools
 import numpy as np
 import networkx as nx
+import lkh_solver as lkh
+# Local modules
+import robotsp as rtsp
 
 
 def compute_tour_cost(graph, tour, weight='weight', is_cycle=True):
@@ -12,6 +16,37 @@ def compute_tour_cost(graph, tour, weight='weight', is_cycle=True):
     v = tour[idx]
     cost += graph.edge[u][v][weight]
   return cost
+
+def lkh_solver(graph, params, weight='weight', path='/tmp/lkh'):
+  # Create the directory where the working files will be stored
+  if not os.path.isdir(path):
+    try:
+      os.makedirs(path)
+    except OSError:
+      raise OSError('Failed to create: {}'.format(path))
+  if graph.is_directed():
+    extension = '.atsp'
+  else:
+    extension = '.tsp'
+  num_nodes = graph.number_of_nodes()
+  problem_file = os.path.join(path,'task{0}{1}'.format(num_nodes, extension))
+  # Write the TSPLIB file
+  basename = lkh.parser.write_tsplib(problem_file, graph, params)
+  # Run the lkh_solver node
+  tour_lkh, info = lkh.solver.lkh_solver(problem_file, params)
+  # Process the case where we have multiple salesmen
+  # The LKH solver reports the nodes starting from 1 (that's the reason for -1)
+  if params.salesmen > 1:
+    tour = []
+    tour.append([])
+    for node in np.int0(tour_lkh[0]):
+      if node > num_nodes:
+        tour.append([])
+      else:
+        tour[-1].append(node-1)
+  else:
+    tour = (np.int0(tour_lkh[0]) - 1).tolist()
+  return tour
 
 def nearest_neighbor(graph, restarts=10, weight='weight'):
   """

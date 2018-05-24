@@ -235,7 +235,7 @@ def write_gtsplib(filename, graph, sets, params):
   fullbasename = os.path.join(path, basename)
   content =  'PROBLEM_FILE = {}\n'.format(filename)
   content += 'ASCENT_CANDIDATES = {:d}\n'.format(params.ascent_candidates)
-  content += 'INITIAL_PERIOD = {:d}\n'.format(params.initial_period)
+  # content += 'INITIAL_PERIOD = {:d}\n'.format(params.initial_period)
   content += 'MAX_CANDIDATES = {:d}\n'.format(params.max_candidates)
   content += 'MAX_TRIALS = {:d}\n'.format(params.max_trials)
   content += 'MOVE_TYPE = {:d}\n'.format(params.move_type)

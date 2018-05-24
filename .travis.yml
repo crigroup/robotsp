@@ -31,6 +31,8 @@ before_install:
   # Prepare rosdep to install dependencies.
   - sudo rosdep init
   - rosdep update
+  # Install coveralls
+  - pip install coveralls --user
 
 # Create a catkin workspace with the package under integration.
 install:
@@ -47,7 +49,8 @@ install:
   # Delete the .rosinstall version and use the branch we are testing
   - rm -rf robotsp/
   - ln -s $CI_SOURCE_PATH .
-  # Install this dependencies from source until they are released in indigo
+  # When installing from source, you need the latest version of these pkgs
+  - git clone https://github.com/crigroup/baldor.git
   - git clone https://github.com/crigroup/criutils.git
   - git clone https://github.com/crigroup/lkh.git
 
@@ -61,5 +64,9 @@ script:
   - cd ~/catkin_ws
   - catkin_make
   - source devel/setup.bash
-  - cd ~/catkin_ws/src/robotsp/tests
-  - nosetests -v test_parser
+  - cd ~/catkin_ws/src/robotsp
+  # Run the tests with coverage
+  - nosetests tests/ --with-coverage --cover-package=robotsp -v
+
+after_success:
+  - coveralls
