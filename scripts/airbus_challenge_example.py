@@ -85,20 +85,24 @@ if __name__ == '__main__':
   params.iktype = orpy.IkParameterizationType.Transform6D
   params.qhome = qhome
   params.standoff = 0.01
-  params.step_size = np.pi/4.
+  params.step_size = np.pi/6.
   # Planning parameters
-  params.try_swap = True
+  params.try_swap = False
   params.planner = 'BiRRT'
   params.max_iters = 100
   params.max_ppiters = 30
   # Run RobotTSP
   logger.info('Running RoboTSP on {0} targets'.format(len(targets)))
-  logger.info('It takes ~30 secs for 245 targets...')
+  logger.info('It takes ~20 secs for 245 targets...')
   trajs, info = rtsp.solver.robotsp_solver(robot, targets, params)
+  # Report
+  ptime = info['solver_cpu_time']
+  etime = info['task_execution_time']
+  logger.info('Planning time: {:.1f} s'.format(ptime))
+  logger.info('Task execution time: {:.1f} s'.format(etime))
   # Visualize trajectories
-  speed = 4
+  speed = 2
   logger.info('Visualizing the trajectory. Speed {0}X'.format(speed))
-  time.sleep(0.5)
   # Configure the viewer
   env.SetDefaultViewer()
   while env.GetViewer() is None:
@@ -108,11 +112,7 @@ if __name__ == '__main__':
   T[:3,3] = [-0.125, 0, 1.65]
   viewer.SetCamera(T, 1.85)
   handles = visualize_trajectories(robot, trajs, speed)
-  logger.info('Done')
-  # Report
-  logger.info('Planning: {:.1f} s'.format(info['solver_cpu_time']))
-  logger.info('Task Execution: {:.1f} s'.format(info['task_execution_time']))
-  # Debug
+  # Interactive console
   import IPython
   IPython.embed(banner1='')
   exit()
